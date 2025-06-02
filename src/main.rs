@@ -25,6 +25,24 @@ enum Commands {
     Logout,
     /// List all the movies
     List,
+    /// Add a movie
+    Add {
+        /// The disc no. of the movie
+        #[arg(short, long)]
+        disc: usize,
+
+        /// The year when the movie was released
+        #[arg(short, long)]
+        year: String,
+
+        /// The title / file name of the movie
+        #[arg(short, long)]
+        title: String,
+
+        /// optional remark of the movie
+        #[arg(short, long)]
+        remark: Option<String>
+    }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>>{
@@ -33,6 +51,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         Some(Commands::Login { username }) => handler_login(username)?,
         Some(Commands::Logout) => handle_logout(),
         Some(Commands::List) => handle_list()?,
+        Some(Commands::Add { 
+            disc, 
+            year, 
+            title, 
+            remark 
+        }) => handle_add(disc, year, title, remark)?,
         _ => println!("No command provided or command not recognized"),
     }
 

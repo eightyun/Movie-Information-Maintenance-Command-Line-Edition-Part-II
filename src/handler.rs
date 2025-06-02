@@ -1,7 +1,7 @@
 use core::error;
 use std::{error::Error};
 
-use crate::services::{self, get_logged_in_role, get_user, login_success, logout, read_from_json};
+use crate::{models::{Movie, Role}, services::{self, get_logged_in_role, get_user, login_success, logout, read_from_json}};
 
 pub fn handler_login(username: &str) -> Result<(), Box<dyn Error>> {
     println!("Username: {username}");
@@ -44,6 +44,27 @@ pub fn handle_list() -> Result<(), Box<dyn Error>> {
             println!("You need to log in to view the movies");
         }
     }
+
+    Ok(())
+}
+
+pub fn handle_add(disc: usize, year: &str, title: &str, remark: &Option<String>) -> Result<(), Box<dyn Error>>{
+    match get_logged_in_role()? {
+        Some(Role::Admin) => {
+            let mut movies = services::read_from_json()?;
+            let new_movie = Movie {
+                disc,
+                year: year.to_string(),
+                title: title.to_string(),
+                remark: remark.clone(),
+            };
+            movies.push(new_movie);
+        }
+        _ => {
+            println!("You need to log in as Admin to add a movie");
+        }
+    }
+
 
     Ok(())
 }

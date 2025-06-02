@@ -67,3 +67,8 @@ fn pad_display_width(s: &str, target_width: usize) -> String {
     let width = UnicodeWidthStr::width(s);
     format!("{}{}", s, " ".repeat(target_width.saturating_sub(width)))
 }
+
+pub fn write_to_json(movies: &[Movie]) -> Result<(), Box<dyn, Error>> {
+    let file = fs::File::create("Movies.json")?;
+    
+}
