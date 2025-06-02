@@ -1,4 +1,6 @@
-use std::fmt::Display;
+use std::{fmt::Display};
+
+use serde::{Deserialize, Serialize};
 
 pub struct User {
     pub username: String,
@@ -20,3 +22,10 @@ impl Display for Role {
     }
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Movie {
+    pub disc: usize,
+    pub year: String,
+    pub title: String,
+    pub remark: Option<String>
+}
