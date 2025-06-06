@@ -68,7 +68,9 @@ fn pad_display_width(s: &str, target_width: usize) -> String {
     format!("{}{}", s, " ".repeat(target_width.saturating_sub(width)))
 }
 
-pub fn write_to_json(movies: &[Movie]) -> Result<(), Box<dyn, Error>> {
+pub fn write_to_json(movies: &[Movie]) -> Result<(), Box<dyn Error>> {
     let file = fs::File::create("Movies.json")?;
-    
+    let write = io::BufWriter::new(file);
+    serde_json::to_writer(write, movies)?;
+    Ok(())
 }
